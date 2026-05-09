@@ -1,0 +1,13 @@
+# Root .gitignore – nur was frontend/ und backend/ nicht abdecken
+
+# Secrets
+.env
+.env.local
+
+# Datenbank
+pgdata/
+
+# Windows
+Thumbs.db
+Desktop.ini
+$RECYCLE.BIN/

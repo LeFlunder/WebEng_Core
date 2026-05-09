@@ -1,0 +1,1 @@
+Core structure of a Web Application
