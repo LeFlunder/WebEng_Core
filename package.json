@@ -44,6 +44,7 @@
     "typeorm": "^0.3.29"
   },
   "devDependencies": {
+    "@angular-devkit/build-angular": "^21.2.10",
     "@angular/build": "^21.2.10",
     "@angular/cli": "^21.2.10",
     "@angular/compiler-cli": "^21.2.0",
