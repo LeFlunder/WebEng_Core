@@ -5,9 +5,9 @@
   "packageManager": "npm@11.12.1",
   "scripts": {
     "backend:build": "nx build backend",
-    "backend:start": "nx serve backend",
-    "backend:start:dev": "nx serve backend --watch",
-    "backend:start:debug": "nx serve backend --debug",
+    "backend:start": "node dist/apps/backend/main.js",
+    "backend:start:dev": "nx build backend && node dist/apps/backend/main.js",
+    "backend:start:debug": "nx build backend && node --inspect dist/apps/backend/main.js",
     "backend:test": "nx test backend",
     "backend:test:e2e": "nx e2e backend",
     "backend:lint": "nx lint backend",
