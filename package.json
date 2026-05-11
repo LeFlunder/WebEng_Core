@@ -4,6 +4,9 @@
   "private": true,
   "packageManager": "npm@11.12.1",
   "scripts": {
+    "docker:up": "docker-compose -f docker/docker-compose.yml up -d",
+    "docker:down": "docker-compose -f docker/docker-compose.yml down",
+    "docker:logs": "docker-compose -f docker/docker-compose.yml logs -f",
     "backend:build": "nx build backend",
     "backend:start": "node dist/apps/backend/main.js",
     "backend:start:dev": "nx build backend && node dist/apps/backend/main.js",
