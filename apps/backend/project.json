@@ -26,11 +26,18 @@
     "serve": {
       "executor": "@nx/js:node",
       "options": {
-        "buildTarget": "backend:build"
+        "buildTarget": "backend:build",
+        "watch": false,
+        "inspect": false
       },
       "configurations": {
         "production": {
           "buildTarget": "backend:build:production"
+        },
+        "development": {
+          "buildTarget": "backend:build",
+          "watch": true,
+          "inspect": "inspect"
         }
       }
     },
