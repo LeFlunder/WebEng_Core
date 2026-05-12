@@ -1,59 +1,116 @@
-# Frontend
+# Frontend - Angular Application
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 21.2.10.
+Modern Angular 17+ application with standalone components, signals, and TypeScript.
 
-## Development server
+## 🏗️ Structure
 
-To start a local development server, run:
-
-```bash
-ng serve
+```
+src/
+├── app/
+│   ├── app.ts              # Root component
+│   ├── app.routes.ts       # Routing configuration
+│   ├── app.config.ts       # Application config
+│   ├── core/               # Core services, guards, interceptors
+│   │   ├── guards/
+│   │   ├── interceptors/
+│   │   ├── models/
+│   │   └── services/
+│   ├── features/           # Feature modules
+│   ├── layout/             # Layout components
+│   │   ├── header/
+│   │   └── sidebar/
+│   └── shared/             # Shared components, directives, pipes
+│       ├── components/
+│       ├── directives/
+│       └── pipes/
+├── environments/           # Environment configurations
+└── styles.scss             # Global styles
 ```
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+## 🚀 Development
 
-## Code scaffolding
+**Note:** This is an NX monorepo app. Run all commands from the **project root**.
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
-
-```bash
-ng generate component component-name
-```
-
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+### Start Development Server
 
 ```bash
-ng generate --help
+# From project root
+npm run frontend:start
 ```
 
-## Building
+Open your browser to `http://localhost:4200/`
 
-To build the project run:
+### Build for Production
 
 ```bash
-ng build
+npm run frontend:build
 ```
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+Build artifacts will be in `dist/apps/frontend/`
 
-## Running unit tests
-
-To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
+## 🧪 Testing
 
 ```bash
-ng test
+# Unit tests
+npm run frontend:test
+
+# Watch mode
+nx test frontend --watch
 ```
 
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
+## 🔍 Code Quality
 
 ```bash
-ng e2e
+# Lint
+npm run frontend:lint
+
+# Format
+npm run frontend:format
 ```
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+## 📝 Code Conventions
 
-## Additional Resources
+### Angular 17+ Best Practices
 
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+- **Standalone Components** - No NgModules
+- **inject()** instead of constructor injection
+- **async pipe** instead of manual subscriptions
+- **Signals** for local state management
+- **OnPush** Change Detection strategy
+
+### TypeScript
+
+- Kein `any` – immer Interfaces nutzen
+- Explizite Return Types bei Funktionen
+- Type-safe everything
+
+### File Naming
+
+- Components: `example-list.component.ts`
+- Services: `example.service.ts`
+- Interfaces: `example.model.ts`
+
+### Code Organization
+
+- Services → `core/services/`
+- Reusable components → `shared/components/`
+- Feature-specific → `features/[name]/`
+
+## 🛠️ Generating Code
+
+```bash
+# Generate component
+nx generate @nx/angular:component --name=my-component --project=frontend
+
+# Generate service
+nx generate @nx/angular:service --name=my-service --project=frontend
+
+# Generate guard
+nx generate @nx/angular:guard --name=my-guard --project=frontend
+```
+
+## 📚 Resources
+
+- [Angular Documentation](https://angular.dev)
+- [Angular Signals](https://angular.dev/guide/signals)
+- [NX Angular](https://nx.dev/nx-api/angular)
