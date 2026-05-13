@@ -4,6 +4,7 @@
   "extends": "../../tsconfig.base.json",
   "compileOnSave": false,
   "compilerOptions": {
+    "types": ["jest"],
     "strict": true,
     "noImplicitOverride": true,
     "noPropertyAccessFromIndexSignature": true,
