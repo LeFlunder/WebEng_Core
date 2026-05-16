@@ -6,6 +6,9 @@ export class User {
   id!: string;
 
   @Column({ unique: true })
+  username!: string;
+
+  @Column({ unique: true })
   email!: string;
 
   @Column({ nullable: true })
@@ -14,6 +17,6 @@ export class User {
   @Column({ nullable: true, unique: true })
   googleId!: string;
 
-  @CreateDateColumn()
+  @CreateDateColumn({ type: 'timestamptz' })
   createdAt!: Date;
 }
