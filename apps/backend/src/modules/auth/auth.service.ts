@@ -1,4 +1,5 @@
 import { Injectable, ConflictException, UnauthorizedException } from '@nestjs/common';
+import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
 import { UsersService } from '../users/users.service';
 import { User } from '../users/user.entity';
@@ -7,7 +8,10 @@ import { LoginDto } from './dto/login.dto';
 
 @Injectable()
 export class AuthService {
-  constructor(private readonly usersService: UsersService) {}
+  constructor(
+    private readonly usersService: UsersService,
+    private readonly jwtService: JwtService,
+  ) {}
 
   async register(dto: RegisterDto) {
     const existing = await this.usersService.findByEmail(dto.email);
@@ -37,6 +41,8 @@ export class AuthService {
     if (!valid) {
       throw new UnauthorizedException('Ungültige Anmeldedaten');
     }
-    return { id: user.id, email: user.email };
+    const payload = { sub: user.id, email: user.email, username: user.username };
+    const token = await this.jwtService.signAsync(payload);
+    return { token, id: user.id, email: user.email };
   }
 }
