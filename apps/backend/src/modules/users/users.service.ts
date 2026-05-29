@@ -30,4 +30,12 @@ export class UsersService {
     const user = this.userRepo.create(userData);
     return this.userRepo.save(user);
   }
+  async update(id: string, data: Partial<User>): Promise<User> {
+    await this.userRepo.update(id, data);
+    return this.userRepo.findOneOrFail({ where: { id } });
+  }
+
+  async delete(id: string): Promise<void> {
+    await this.userRepo.delete(id);
+  }
 }

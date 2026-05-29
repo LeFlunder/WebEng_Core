@@ -1,6 +1,8 @@
-import 'dotenv/config';
-import { join } from 'path';
+import * as dotenv from 'dotenv';
+import { join, resolve } from 'path';
 import { DataSource } from 'typeorm';
+
+dotenv.config({ path: resolve(__dirname, '../../../../.env') });
 import { User } from '../modules/users/user.entity';
 
 export default new DataSource({

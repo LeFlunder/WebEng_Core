@@ -12,7 +12,8 @@ export const validationSchema = Joi.object({
   GOOGLE_CLIENT_ID: Joi.string().required(),
   GOOGLE_CLIENT_SECRET: Joi.string().required(),
   GOOGLE_CALLBACK_URL: Joi.string().uri().required(),
+  FRONTEND_URL: Joi.string().uri().required(),
 
-  JWT_TEMP_SECRET: Joi.string().min(32).required(),
-  JWT_TEMP_EXPIRES_IN: Joi.string().default('15m'),
+  JWT_SECRET: Joi.string().min(32).required(),
+  JWT_EXPIRATION: Joi.string().default('15m'),
 });

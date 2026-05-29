@@ -1,4 +1,5 @@
 import { Module } from '@nestjs/common';
+import { validationSchema } from './config/validation.schema';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
@@ -8,7 +9,6 @@ import { UsersModule } from './modules/users/users.module';
 import { AuthModule } from './modules/auth/auth.module';
 import { ThrottlerModule, ThrottlerGuard } from '@nestjs/throttler';
 import { APP_GUARD } from '@nestjs/core';
-import Joi from 'joi';
 
 @Module({
   imports: [
@@ -21,15 +21,7 @@ import Joi from 'joi';
 
     ConfigModule.forRoot({
       isGlobal: true,
-      validationSchema: Joi.object({
-        NODE_ENV: Joi.string().valid('development', 'production', 'test').default('development'),
-        PORT: Joi.number().default(3000),
-        DB_HOST: Joi.string().required(),
-        DB_PORT: Joi.number().default(5432),
-        DB_USER: Joi.string().required(),
-        DB_PASS: Joi.string().required(),
-        DB_NAME: Joi.string().required(),
-      }),
+      validationSchema,
       validationOptions: {
         abortEarly: false, // show ALL errors at once, not just the first
       },

@@ -45,4 +45,37 @@ export class AuthService {
     const token = await this.jwtService.signAsync(payload);
     return { token, id: user.id, email: user.email };
   }
+
+  async issueTokens(user: User): Promise<{ accessToken: string }> {
+    const payload = { sub: user.id, email: user.email, username: user.username };
+    const accessToken = await this.jwtService.signAsync(payload);
+    return { accessToken };
+  }
+
+  async delete_user(userId: string): Promise<void> {
+    await this.usersService.delete(userId);
+  }
+
+  async findOrCreateGoogleUser(data: {
+    googleId: string;
+    email: string | undefined;
+    emailVerified?: boolean;
+  }): Promise<User> {
+    const existing = await this.usersService.findByGoogleId(data.googleId);
+    if (existing) {
+      return existing;
+    }
+
+    if (data.email && data.emailVerified) {
+      const byEmail = await this.usersService.findByEmail(data.email);
+      if (byEmail) {
+        return this.usersService.update(byEmail.id, { googleId: data.googleId });
+      }
+    }
+    return this.usersService.create({
+      googleId: data.googleId,
+      email: data.email ?? '',
+      username: data.email?.split('@')[0] ?? data.googleId,
+    });
+  }
 }

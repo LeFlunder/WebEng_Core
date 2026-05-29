@@ -11,12 +11,23 @@ export class User {
   @Column({ unique: true })
   email!: string;
 
-  @Column({ nullable: true })
-  passwordHash!: string;
+  @Column({ type: 'varchar', nullable: true })
+  passwordHash!: string | null;
 
-  @Column({ nullable: true, unique: true })
-  googleId!: string;
+  @Column({ type: 'varchar', nullable: true, unique: true })
+  googleId!: string | null;
 
   @CreateDateColumn({ type: 'timestamptz' })
   createdAt!: Date;
+
+  @Column({ type: 'varchar', nullable: true })
+  picture!: string | null;
+
+  get hasPassword(): boolean {
+    return this.passwordHash !== null;
+  }
+
+  get hasGoogle(): boolean {
+    return this.googleId !== null;
+  }
 }

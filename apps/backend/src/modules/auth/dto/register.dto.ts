@@ -3,7 +3,7 @@ import { IsNotEmpty, MinLength, Matches, IsEmail } from 'class-validator';
 export class RegisterDto {
   @IsNotEmpty()
   @MinLength(4)
-  @Matches(/^[^ ,/!\\]/, {
+  @Matches(/^[^ ,/!\\]+$/, {
     message: 'Username cannot contain space, comma, slash, backslash or exclamation mark',
   })
   username!: string;
