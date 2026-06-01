@@ -23,6 +23,9 @@ export class User {
   @Column({ type: 'varchar', nullable: true })
   picture!: string | null;
 
+  @Column({ type: 'bool', default: false })
+  isUsernameSet!: boolean;
+
   get hasPassword(): boolean {
     return this.passwordHash !== null;
   }

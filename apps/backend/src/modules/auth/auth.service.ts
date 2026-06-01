@@ -5,6 +5,7 @@ import { UsersService } from '../users/users.service';
 import { User } from '../users/user.entity';
 import { RegisterDto } from './dto/register.dto';
 import { LoginDto } from './dto/login.dto';
+import { randomUUID } from 'node:crypto';
 
 @Injectable()
 export class AuthService {
@@ -14,14 +15,19 @@ export class AuthService {
   ) {}
 
   async register(dto: RegisterDto) {
-    const existing = await this.usersService.findByEmail(dto.email);
-    if (existing) {
-      throw new ConflictException('Registrierung fehlgeschlagen');
+    const existing_email = await this.usersService.findByEmail(dto.email);
+    const existing_username = await this.usersService.findByUsername(dto.username);
+    if (existing_username) {
+      throw new ConflictException('Registrierung fehlgeschlagen - Benutzername bereits vergeben');
+    }
+    if (existing_email) {
+      throw new ConflictException('Registrierung fehlgeschlagen - Email bereits vergeben');
     }
     const passwordHash = await bcrypt.hash(dto.password, 12);
     const user = await this.usersService.create({
       username: dto.username,
       email: dto.email,
+      isUsernameSet: true,
       passwordHash,
     });
     return { id: user.id, email: user.email };
@@ -41,15 +47,34 @@ export class AuthService {
     if (!valid) {
       throw new UnauthorizedException('Ungültige Anmeldedaten');
     }
-    const payload = { sub: user.id, email: user.email, username: user.username };
+    const payload = {
+      sub: user.id,
+      email: user.email,
+      username: user.username,
+      isUsernameSet: user.isUsernameSet,
+    };
     const token = await this.jwtService.signAsync(payload);
-    return { token, id: user.id, email: user.email };
+    return { token, id: user.id, email: user.email, isUsernameSet: user.isUsernameSet };
   }
 
   async issueTokens(user: User): Promise<{ accessToken: string }> {
-    const payload = { sub: user.id, email: user.email, username: user.username };
+    const payload = {
+      sub: user.id,
+      email: user.email,
+      username: user.username,
+      isUsernameSet: user.isUsernameSet,
+    };
     const accessToken = await this.jwtService.signAsync(payload);
     return { accessToken };
+  }
+
+  async setUsername(userId: string, username: string) {
+    const existing = await this.usersService.findByUsername(username);
+    if (existing) {
+      throw new ConflictException('Username bereits vergeben');
+    }
+    const user = await this.usersService.update(userId, { username, isUsernameSet: true });
+    return { id: user.id, email: user.email, username: user.username, isUsernameSet: user.isUsernameSet };
   }
 
   async delete_user(userId: string): Promise<void> {
@@ -72,10 +97,14 @@ export class AuthService {
         return this.usersService.update(byEmail.id, { googleId: data.googleId });
       }
     }
+
+    const tempUsername = `user_${randomUUID()}`;
+
     return this.usersService.create({
       googleId: data.googleId,
       email: data.email ?? '',
-      username: data.email?.split('@')[0] ?? data.googleId,
+      username: tempUsername,
+      isUsernameSet: false,
     });
   }
 }

@@ -1,4 +1,4 @@
-import { Body, Controller, Get, HttpCode, Post, Req, Res, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, HttpCode, Patch, Post, Req, Res, UseGuards } from '@nestjs/common';
 import { Request, Response } from 'express';
 import { JwtAuthGuard } from './guards/jwt.authguard';
 import { GoogleAuthGuard } from './guards/google.authguard';
@@ -40,6 +40,15 @@ export class AuthController {
     return req.user;
   }
 
+  @UseGuards(JwtAuthGuard)
+  @Patch('set-username')
+  async setUsername(
+    @Req() req: Request & { user: { id: string } },
+    @Body() body: { username: string },
+  ) {
+    return this.authService.setUsername(req.user.id, body.username);
+  }
+
   @Post('logout')
   logout(@Res({ passthrough: true }) res: Response) {
     res.clearCookie('token', {
@@ -71,7 +80,11 @@ export class AuthController {
       maxAge: 1000 * 60 * 15,
       path: '/',
     });
-    res.redirect(`${process.env.FRONTEND_URL}/oauth-success`);
+    res.redirect(
+      req.user.isUsernameSet === true
+        ? `${process.env.FRONTEND_URL}/dashboard`
+        : `${process.env.FRONTEND_URL}/choose-username`,
+    );
   }
   //@Delete('delete_user')
 }
