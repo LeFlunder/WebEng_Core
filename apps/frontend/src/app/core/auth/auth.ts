@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
-import { tap } from 'rxjs/operators';
+import { Observable, of } from 'rxjs';
+import { tap, catchError } from 'rxjs/operators';
 import { Injectable, inject, signal } from '@angular/core';
 import { environment } from '../../../environments/environment';
 
@@ -38,14 +38,17 @@ export class Auth {
     return this.http.post(`${this.apiUrl}/logout`, {});
   }
 
-  loadProfile(): Observable<AuthUser> {
-    return this.http
-      .get<AuthUser>(`${this.apiUrl}/profile`)
-      .pipe(tap((user) => this.user.set(user)));
+  loadProfile(): Observable<AuthUser | null> {
+    return this.http.get<AuthUser>(`${this.apiUrl}/profile`).pipe(
+      tap((user) => this.user.set(user)),
+      catchError(() => {
+        this.user.set(null);
+        return of(null);
+      }),
+    );
   }
 }
 
-export function initAuth(): () => Observable<AuthUser> {
-  const auth = inject(Auth);
-  return () => auth.loadProfile();
+export function initAuth(): Observable<AuthUser | null> {
+  return inject(Auth).loadProfile();
 }

@@ -28,7 +28,7 @@ export class ChooseUsername {
   error = signal<string | null>(null);
 
   skip(): void {
-    this.router.navigate(['/']);
+    void this.router.navigate(['/']);
   }
 
   submit(): void {
@@ -41,7 +41,7 @@ export class ChooseUsername {
     this.auth.setUsername(trimmed).subscribe({
       next: (user) => {
         this.auth.user.set(user);
-        this.router.navigate(['/']);
+        void this.router.navigate(['/']);
       },
       error: () => {
         this.error.set('Benutzername bereits vergeben oder ungültig.');
