@@ -74,7 +74,12 @@ export class AuthService {
       throw new ConflictException('Username bereits vergeben');
     }
     const user = await this.usersService.update(userId, { username, isUsernameSet: true });
-    return { id: user.id, email: user.email, username: user.username, isUsernameSet: user.isUsernameSet };
+    return {
+      id: user.id,
+      email: user.email,
+      username: user.username,
+      isUsernameSet: user.isUsernameSet,
+    };
   }
 
   async delete_user(userId: string): Promise<void> {
