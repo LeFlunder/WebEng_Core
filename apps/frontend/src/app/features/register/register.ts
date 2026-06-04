@@ -14,17 +14,6 @@ import { environment } from '../../../environments/environment';
       <div class="auth-card">
         <h1 class="auth-title">Sign up for free</h1>
 
-        <button class="btn btn-social" (click)="auth.loginOrRegisterWithGoogle()">
-          <img class="social-icon" src="public/google.ico" alt="Google" />
-          Sign up with Google
-        </button>
-
-        <div class="divider">
-          <span class="divider-line"></span>
-          <span class="divider-text">or</span>
-          <span class="divider-line"></span>
-        </div>
-
         <div class="form-group">
           <label class="form-label">Username</label>
           <input class="form-input" [(ngModel)]="username" placeholder="Username" type="text" />
@@ -54,6 +43,17 @@ import { environment } from '../../../environments/environment';
         }
 
         <button class="btn btn-primary" (click)="submit()">Create account</button>
+
+        <div class="divider">
+          <span class="divider-line"></span>
+          <span class="divider-text">or</span>
+          <span class="divider-line"></span>
+        </div>
+
+        <button class="btn btn-social" (click)="auth.loginOrRegisterWithGoogle()">
+          <img class="social-icon" src="public/google.ico" alt="Google" />
+          Sign up with Google
+        </button>
 
         <div class="auth-footer">
           <span class="footer-text">Already have an account?</span>
