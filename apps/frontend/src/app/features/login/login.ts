@@ -7,21 +7,8 @@ import { Auth } from '../../core/auth/auth';
   selector: 'app-login',
   standalone: true,
   imports: [FormsModule, RouterLink],
-  template: `
-    <h1>Login</h1>
-    <input [(ngModel)]="identifier" placeholder="Email or Username" type="email" />
-    <input [(ngModel)]="password" placeholder="Passwort" type="password" />
-    <button (click)="submit()">Anmelden</button>
-    <button (click)="auth.loginOrRegisterWithGoogle()">Mit Google anmelden</button>
-    <a routerLink="/register">Noch kein Konto? Registrieren</a>
-
-    @if (error()) {
-      <p style="color:red">{{ error() }}</p>
-    }
-    @if (auth.user(); as u) {
-      <p>Eingeloggt als {{ u.email }}</p>
-    }
-  `,
+  templateUrl: './login.html',
+  styleUrl: './login.scss',
 })
 export class Login {
   protected auth = inject(Auth);

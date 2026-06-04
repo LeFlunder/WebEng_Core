@@ -8,16 +8,37 @@ import { Auth } from '../../core/auth/auth';
   standalone: true,
   imports: [FormsModule],
   template: `
-    <h1>Benutzername wählen</h1>
-    <p>Du hast dich mit Google angemeldet. Bitte wähle einen Benutzernamen.</p>
-    <input [(ngModel)]="username" placeholder="Benutzername" type="text" [disabled]="loading()" />
-    <button (click)="submit()" [disabled]="!username.trim() || loading()">Bestätigen</button>
-    <button (click)="skip()" [disabled]="loading()">Später</button>
+    <div class="auth-page">
+      <div class="auth-card">
+        <h1 class="auth-title">Choose a username</h1>
+        <p class="auth-subtitle">Pick a username for your profile. You can always change it later.</p>
 
-    @if (error()) {
-      <p style="color:red">{{ error() }}</p>
-    }
+        <div class="form-group">
+          <label class="form-label">Username</label>
+          <input
+            class="form-input"
+            [(ngModel)]="username"
+            placeholder="Username"
+            type="text"
+            [disabled]="loading()"
+          />
+        </div>
+
+        @if (error()) {
+          <p class="error-msg">{{ error() }}</p>
+        }
+
+        <button class="btn btn-primary" (click)="submit()" [disabled]="!username.trim() || loading()">
+          {{ loading() ? 'Saving...' : 'Continue' }}
+        </button>
+
+        <button class="btn btn-ghost" (click)="skip()" [disabled]="loading()">
+          Skip for now
+        </button>
+      </div>
+    </div>
   `,
+  styleUrl: './choose-username.scss',
 })
 export class ChooseUsername {
   private readonly auth = inject(Auth);
@@ -44,7 +65,7 @@ export class ChooseUsername {
         void this.router.navigate(['/']);
       },
       error: () => {
-        this.error.set('Benutzername bereits vergeben oder ungültig.');
+        this.error.set('Username already taken or invalid.');
         this.loading.set(false);
       },
     });
