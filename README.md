@@ -99,4 +99,12 @@
 ## Features
 - [ ] Feature 1
 - [ ] Feature 2
+
+# DB-Scheme
+Brewery  ──< Beer >── BeerStyle
+                │
+                ├──< Review >── User
+                │         └──< ReviewLike
+                │
+                └──< UserBeerEntry >── User
 ```

@@ -5,6 +5,12 @@ import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { User } from './modules/users/user.entity';
+import { Beer } from './common/entities/beer.entity';
+import { BeerStyle } from './common/entities/beer-style.entity';
+import { Brewery } from './common/entities/brewery.entity';
+import { Review } from './common/entities/review.entity';
+import { ReviewLike } from './common/entities/review-like.entity';
+import { UserBeerEntry } from './common/entities/user-entry.entity';
 import { UsersModule } from './modules/users/users.module';
 import { AuthModule } from './modules/auth/auth.module';
 import { ThrottlerModule, ThrottlerGuard } from '@nestjs/throttler';
@@ -35,7 +41,7 @@ import { APP_GUARD } from '@nestjs/core';
         username: config.get<string>('DB_USER'),
         password: config.get<string>('DB_PASS'),
         database: config.get<string>('DB_NAME'),
-        entities: [__dirname + '/**/*.entity{.ts,.js}', User],
+        entities: [User, Beer, BeerStyle, Brewery, Review, ReviewLike, UserBeerEntry],
         synchronize: process.env.NODE_ENV !== 'production',
       }),
     }),
