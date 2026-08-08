@@ -3,24 +3,30 @@ services:
   backend:
     container_name: nx-backend
     build:
-      context: .                         
-      dockerfile: Dockerfile.backend     
+      context: ..
+      dockerfile: docker/Dockerfile.backend
     ports:
-      - "3000:3000"         
+      - "3000:3000"
+    env_file:
+      - ../.env
     environment:
-      - NODE_ENV=production        
-    restart: always            
+      - NODE_ENV=production
+      - DB_HOST=db
+    depends_on:
+      db:
+        condition: service_healthy
+    restart: always
 
   frontend:
     container_name: nx-frontend
     build:
-      context: .                
-      dockerfile: Dockerfile.frontend    
+      context: ..
+      dockerfile: docker/Dockerfile.frontend
     ports:
-      - "4200:4200"                      
+      - "4200:80"
     restart: always
     depends_on:
-      - backend 
+      - backend
   
   db:
     image: postgres:16
