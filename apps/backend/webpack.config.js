@@ -13,6 +13,16 @@ module.exports = {
       main: './src/main.ts',
       tsConfig: './tsconfig.app.json',
       outputHashing: 'none',
+      generatePackageJson: true,
+      transformers: [
+        {
+          name: '@nestjs/swagger/plugin',
+          options: {
+            dtoFileNameSuffix: ['.dto.ts', '.entity.ts'],
+            introspectComments: true,
+          },
+        },
+      ],
     }),
   ],
   externalsPresets: {

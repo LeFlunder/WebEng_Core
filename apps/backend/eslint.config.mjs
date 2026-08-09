@@ -19,7 +19,7 @@ export default [
       },
       sourceType: 'commonjs',
       parserOptions: {
-        projectService: true,
+        project: ['./tsconfig.app.json', './tsconfig.spec.json'],
         tsconfigRootDir: import.meta.dirname,
       },
     },
