@@ -33,14 +33,14 @@ export class Beer {
   @Column({ type: 'decimal', precision: 4, scale: 1, nullable: true })
   abv!: number;
 
-  @Column({ nullable: true })
+  @Column({ type: 'decimal', precision: 6, scale: 1, nullable: true })
   ibu!: number;
 
-  @Column({ nullable: true })
+  @Column({ type: 'decimal', precision: 6, scale: 1, nullable: true })
   ebc!: number;
 
   // Beer color in degrees SRM, as reported by imported sources (distinct unit from ebc above).
-  @Column({ nullable: true })
+  @Column({ type: 'decimal', precision: 6, scale: 1, nullable: true })
   srm!: number;
 
   @Column({ default: true })
@@ -55,9 +55,6 @@ export class Beer {
   @ManyToOne(() => Brewery, (brewery) => brewery.beers, { eager: true, nullable: true })
   brewery!: Brewery;
 
-  // nullable: style isn't populated by the current OBDB seed (no styles.csv import yet).
-  @ManyToOne(() => BeerStyle, (style) => style.beers, { eager: true, nullable: true })
-  style!: BeerStyle;
 
   @OneToMany(() => Review, (review) => review.beer)
   reviews!: Review[];
@@ -65,7 +62,6 @@ export class Beer {
   @OneToMany(() => UserBeerEntry, (entry) => entry.beer)
   userEntries!: UserBeerEntry[];
 
-  // Computed / cached
   @Column({ type: 'decimal', precision: 3, scale: 2, default: 0 })
   avgRating!: number;
 
