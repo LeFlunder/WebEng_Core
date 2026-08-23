@@ -6,8 +6,19 @@ export class Brewery {
   @PrimaryGeneratedColumn('uuid')
   id!: string;
 
+  // Original id from an imported source (e.g. the Open Beer Database dump).
+  // Used as the upsert key so re-running a seed doesn't create duplicates.
+  @Column({ type: 'int', unique: true, nullable: true })
+  sourceId!: number;
+
   @Column()
   name!: string;
+
+  @Column({ nullable: true })
+  city!: string;
+
+  @Column({ nullable: true })
+  state!: string;
 
   @Column({ nullable: true })
   country!: string;
