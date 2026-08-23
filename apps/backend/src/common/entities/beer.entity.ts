@@ -16,6 +16,11 @@ export class Beer {
   @PrimaryGeneratedColumn('uuid')
   id!: string;
 
+  // Original id from an imported source (e.g. the Open Beer Database dump).
+  // Used as the upsert key so re-running a seed doesn't create duplicates.
+  @Column({ type: 'int', unique: true, nullable: true })
+  sourceId!: number;
+
   @Column()
   name!: string;
 
@@ -28,11 +33,15 @@ export class Beer {
   @Column({ type: 'decimal', precision: 4, scale: 1, nullable: true })
   abv!: number;
 
-  @Column({ nullable: true })
+  @Column({ type: 'decimal', precision: 6, scale: 1, nullable: true })
   ibu!: number;
 
-  @Column({ nullable: true })
+  @Column({ type: 'decimal', precision: 6, scale: 1, nullable: true })
   ebc!: number;
+
+  // Beer color in degrees SRM, as reported by imported sources (distinct unit from ebc above).
+  @Column({ type: 'decimal', precision: 6, scale: 1, nullable: true })
+  srm!: number;
 
   @Column({ default: true })
   isActive!: boolean;
@@ -41,10 +50,12 @@ export class Beer {
   createdAt!: Date;
 
   // Relations
-  @ManyToOne(() => Brewery, (brewery) => brewery.beers, { eager: true })
+  // nullable: seeded beers whose source brewery couldn't be resolved are kept with brewery = null
+  // instead of being dropped.
+  @ManyToOne(() => Brewery, (brewery) => brewery.beers, { eager: true, nullable: true })
   brewery!: Brewery;
 
-  @ManyToOne(() => BeerStyle, (style) => style.beers, { eager: true })
+  @ManyToOne(() => BeerStyle, (beerStyle) => beerStyle.beers, { nullable: true })
   style!: BeerStyle;
 
   @OneToMany(() => Review, (review) => review.beer)
@@ -53,7 +64,6 @@ export class Beer {
   @OneToMany(() => UserBeerEntry, (entry) => entry.beer)
   userEntries!: UserBeerEntry[];
 
-  // Computed / cached
   @Column({ type: 'decimal', precision: 3, scale: 2, default: 0 })
   avgRating!: number;
 
