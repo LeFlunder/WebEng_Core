@@ -55,6 +55,8 @@ export class Beer {
   @ManyToOne(() => Brewery, (brewery) => brewery.beers, { eager: true, nullable: true })
   brewery!: Brewery;
 
+  @ManyToOne(() => BeerStyle, (beerStyle) => beerStyle.beers, { nullable: true })
+  style!: BeerStyle;
 
   @OneToMany(() => Review, (review) => review.beer)
   reviews!: Review[];
