@@ -28,7 +28,8 @@
     "typeorm": "ts-node --transpile-only --project apps/backend/tsconfig.app.json node_modules/typeorm/cli.js",
     "migration:generate": "npm run typeorm -- migration:generate -d apps/backend/src/database/data-source.ts",
     "migration:run": "npm run typeorm -- migration:run -d apps/backend/src/database/data-source.ts",
-    "migration:revert": "npm run typeorm -- migration:revert -d apps/backend/src/database/data-source.ts"
+    "migration:revert": "npm run typeorm -- migration:revert -d apps/backend/src/database/data-source.ts",
+    "backend:seed": "ts-node --transpile-only --project apps/backend/tsconfig.app.json apps/backend/src/database/seeds/seed.ts"
   },
   "dependencies": {
     "@angular/common": "^21.2.9",
@@ -51,6 +52,7 @@
     "class-transformer": "^0.5.1",
     "class-validator": "^0.15.1",
     "cookie-parser": "^1.4.7",
+    "csv-parse": "^5.6.0",
     "helmet": "^8.1.0",
     "joi": "^18.2.1",
     "passport": "^0.7.0",
